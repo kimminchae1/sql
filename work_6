@@ -1,0 +1,16 @@
+# 과제6 (집합함수)
+# 부서별 평균 급여 출력
+# 부서명, 부서위치, 도시명 출력
+# 짝수년도에 입사한 직원만 평균
+# 평균급여가 7000 이상만 출력 HAVING BY
+# 평균급여는 천단위 이하 버리기 TURNCATE
+# 평균급여가 많은 순서로 정렬 DESC
+
+select d.department_name 부서명, l.street_address 부서위치, l.city 도시명, TRUNCATE(avg(e.salary),-3) 평균급여
+from departments d
+	  join locations l on d.location_id = l.location_id
+    join employees e on e.department_id = d.department_id
+where year(e.hire_date)%2 = 0
+group by e.department_id
+having avg(salary) >= 7000
+order by 평균급여 DESC;
