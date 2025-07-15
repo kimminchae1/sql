@@ -1,0 +1,50 @@
+use newhr;
+
+# 출력 및 Alias
+# 부서번호 80번에 근무하는 직원들의 이름, 이메일, 급여 출력
+select first_name 이름, last_name 이름, email 이메일, salary급여 # --> Claus 절
+from employees
+where department_id = 80;
+
+# distinct : 중복제거
+  
+# 직원 테이블로부터 (사번)컬럼의 값을 출력
+select department_id
+from employees;
+
+select last_name, salary, (salary + 200) * 12 연봉
+from employees;
+
+# commission_pct : 값이 정해지지 않았음, 컬럼에 데이터가 존재하지 않음
+select last_name, commission_pct
+from employees;
+
+* 12 "커미션반영급여" # NULL을 포함한 산술식은 NULL이다.
+select last_name, commission_pct, salary * (1 + commission_pct)
+from employees;
+
+# ifnull : commission_pct 이 NULL 이면 0 을 출력한다.
+select last_name, commission_pct, salary * (1 + ifnull(commission_pct, 0)) * 12 "커미션반영급여"
+from employees;
+
+# 성이 King인 직원을 조회
+select *
+from employees
+# where last_name = 'King';
+# where hire_date = '2013-06-17';
+# where salary = 8000;
+# where department_id in (80, 100);
+# where commission_pct = null -- 커미션을 받지 않는 직원
+# where commission_pct is null; -- 커미션을 받지 않는 직원
+# where last_name like 'K%';
+# where employee_id like '%8';
+where salary > 10000
+    and hire_date >= '2010-01-01';
+
+# 연산자 우선 순위 -- and, or
+select count(*)
+from employees
+where (job_id = 'IT_PROG'
+    or department_id = 100
+    or department_id = 80)
+    and first_name like 'D%';
