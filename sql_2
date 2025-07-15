@@ -1,0 +1,80 @@
+use newhr;
+
+# 문자열 함수 : concat(s1,s2) 하나의 결합된 문자열을 리턴
+select concat('haha', 'good!');
+select first_name, concat(first_name, ' ', last_name)
+from employees;
+
+# 문자열 함수 : substr(s,m,n) m 번째부터 길이 n인 문자열 반환
+select substr(first_name, 3), substr(first_name, 3, 5), first_name
+from employees;
+
+# 숫자 함수 : round(m,n) 소수점 아래 n자리까지 반올림
+select round(123.456), round(123.456, 2), round(123.456, -2);
+
+# 숫자 함수 : truncate(m,n) 소수점 아래 n자리미만 버림
+select truncate(123.456, 0), truncate(123.456, -2);
+       
+# 환율 1388
+select salary, round(salary*1388, -4)
+from employees;
+
+# 숫자 함수 (함수 : 명령어들을 모아둔 것)
+select now(), sysdate(), curdate(), curtime();
+select adddate(curdate(), interval 100 day), adddate(curdate(), interval 6 month), year(curdate());
+    
+# 입사 후 20주년 일자, 근속년수 계산
+select last_name, hire_date, adddate(hire_date, interval 20 year) # 입사 후 20주년 일자
+from employees;
+
+select round(datediff(curdate(), hire_date) / 365.5, 1) # 입사 후 근속년수
+       , timestampdiff(year, hire_date, curdate())
+from employees;
+
+select last_name, hire_date, date_format(hire_date, '%Y-%m-%d') 입사년월일
+from employees;
+
+# 부서번호가 10이면 급여의 1.2배, 20이면 급여의 2배, 나머지는 급여 그대로
+select last_name, department_id, salary,
+    case when department_id = 10 then salary * 1.2
+		     when department_id = 20 then salary * 2
+         else salary
+    end bouns
+from employees;
+
+# 성, 명, 급여, 근무부서명
+select e.last_name, d.department_name
+from employees e, departments d
+where e.department_id = d.department_id;
+
+# Ansi 조인, 위에랑 같음
+select *
+from employees e join departments d
+    on e.department_id = d.department_id;
+    
+select *
+from employees e join departments d
+     using (department_id);   
+
+select * from employees;
+
+# 부서번호 90번에 해당하는 부서정보를 조회
+select *
+from  departments
+where department_id = 90;
+
+# join
+select e.last_name, d.department_name
+from employees e join departments d on e.department_id = d.department_id;
+
+select count(*) #106
+from employees e left join departments d on e.department_id = d.department_id;
+# left join => outer join
+
+select count(*) #107
+from employees e;
+
+# department_id 가 NULL 인 경우 => 아직 부서에 배치되지 않은 사원
+select *
+from employees
+where department_id is null;
