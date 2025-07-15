@@ -1,0 +1,17 @@
+# 과제5-1 (join & self join & outer join)
+# 사번, 성명, 급여, 입사일자, 관리자사번, 관리자명, 입사일자 출력
+# 관리자가 존재하지 않는 경우 관리자없음을 출력
+select e.employee_id, e.last_name, e.salary, e.hire_date, ifnull(m.employee_id, '관리자 없음') 관리자사번 ,
+       ifnull(m.last_name, '관리자 없음') 관리자명, ifnull(m.hire_date, '관리자 없음')  관리자입사일자
+from employees e
+    left join employees m
+	  on e.manager_id = m.employee_id;
+
+# 과제5-2 (join & self join & outer join)
+# 부서번호, 부서명, 부서장사번, 부서장명을 출력
+# 부서장이 없으면 부서장사번, 부서장명을 부서장없음이라고 출력
+select e.department_id 부서번호, d.department_name 부서명, ifnull(d.manager_id, '부서장 없음') 부서장사번,
+        ifnull(e.last_name, '부서장 없음') 부서장명
+from employees e
+     right join departments d
+     on e.employee_id = d.manager_id;
